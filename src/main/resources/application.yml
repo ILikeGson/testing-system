@@ -1,0 +1,4 @@
+application:
+  locale: en
+  questions: "/questions_en.csv"
+  scoresToPass: 5

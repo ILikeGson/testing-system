@@ -1,0 +1,5 @@
+﻿1;What does JVM stand for?;java virtual machine
+2;What was new in Java 8?;lambdas;streams
+3;Who does delete objects when there are no links on them?;garbage collector
+4;Which Spring project allows you to boost your app developing?;Spring Boot
+5;Where is Java can be used in the real world?;Android;Web
