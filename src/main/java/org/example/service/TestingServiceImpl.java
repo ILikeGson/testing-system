@@ -6,47 +6,51 @@ import org.example.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("testingSystem")
 public class TestingServiceImpl implements TestingService {
     private final QuestionService questionService;
-    private final ConsoleIOService consoleService;
+    private final IOService consoleIOService;
+    private final MessageSourceLocalizationService localizationService;
     private final AppProps props;
 
     @Autowired
-    public TestingServiceImpl(QuestionService questionService, AppProps props, ConsoleIOService consoleService) {
+    public TestingServiceImpl(QuestionService questionService, AppProps props,
+                              MessageSourceLocalizationService localizationService,
+                              ConsoleIOService consoleIOService) {
         this.questionService = questionService;
-        this.consoleService = consoleService;
+        this.localizationService = localizationService;
+        this.consoleIOService = consoleIOService;
         this.props = props;
     }
 
     @Override
     public String test(Student student) {
         int scores = 0;
-        consoleService.out("\nYou have to get at least " + props.getScoresToPass() + " scores to pass the test\n");
+        consoleIOService.out(localizationService.getMessage("test.infoToPass", props.getScoresToPass()) + "\n");
         List<Question> questions = questionService.getQuestions();
         for (Question question : questions) {
             List<String> answers = question.getAnswers();
-            consoleService.out("\n" + question.showQuestion());
-            consoleService.out("\nEnter your answer: ");
-            String studentsAnswer = consoleService.read();
+            consoleIOService.out("\n" + question.showQuestion() + "\n");
+            consoleIOService.out(localizationService.getMessage("test.answer"));
+            String studentsAnswer = consoleIOService.read();
 
-            String[] studentAnswers = studentsAnswer.split(", ");
+            var studentAnswers = Arrays.stream(studentsAnswer.split(", ")).collect(Collectors.toSet());
             for (String ans : studentAnswers) {
-                for (String correctAnswer : answers) {
-                    if (ans.equalsIgnoreCase(correctAnswer)) {
-                        ++scores;
-                    }
+                if (answers.contains(ans)) {
+                    ++scores;
                 }
             }
         }
         if (scores >= props.getScoresToPass()) {
-            consoleService.out("\nYou've passed this test\n");
+            consoleIOService.out("\n" + localizationService.getMessage("test.passed") + "\n");
         } else {
-            consoleService.out("\nYou didn't pass the test\n");
+            consoleIOService.out("\n" + localizationService.getMessage("test.failed") + "\n");
         }
-
-        return student.getFirstName() + " " + student.getLastName() + " - your result is " + scores + " scores\n";
+        return localizationService.getMessage("test.result",
+                student.getFirstName(), student.getLastName(), scores) + "\n";
     }
 }

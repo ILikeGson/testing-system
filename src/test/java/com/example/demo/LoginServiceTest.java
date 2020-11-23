@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.example.service.ConsoleIOService;
 import org.example.domain.Student;
+import org.example.service.LocalizationService;
 import org.example.service.StudentLoginService;
 import org.example.service.StudentServiceImpl;
 import org.junit.Test;
@@ -20,6 +21,9 @@ import static org.mockito.Mockito.when;
 public class LoginServiceTest {
 
     @Mock
+    LocalizationService localizationService;
+
+    @Mock
     ConsoleIOService consoleIOService;
 
     @Mock
@@ -31,7 +35,7 @@ public class LoginServiceTest {
     @DisplayName("testing a login system")
     @Test
     public void testStudentLogin() {
-        when(loginService.login()).thenReturn(new Student("Vasya", "Heiter"));
+        when(loginService.login()).thenReturn(new Student("Vasya", "Ivanov"));
         assertNotNull(loginService.login());
     }
 }

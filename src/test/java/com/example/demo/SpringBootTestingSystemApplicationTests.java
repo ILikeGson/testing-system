@@ -33,7 +33,7 @@ class SpringBootTestingSystemApplicationTests {
     @Qualifier("consoleIOService")
     private IOService consoleService;
 
-    @MockBean
+    @Autowired
     private LocalizationService localizationService;
 
     @MockBean
@@ -77,7 +77,7 @@ class SpringBootTestingSystemApplicationTests {
 
     @Test
     void TestingServiceTest() {
-        questions = new ArrayList<Question>();
+        questions = new ArrayList<>();
         questions.add(new Question("How many days are in a year?", List.of("365")));
         student = new Student("Vasya", "Ivanov");
         when(questionService.getQuestions()).thenReturn(questions);
