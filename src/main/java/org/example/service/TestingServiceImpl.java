@@ -40,7 +40,7 @@ public class TestingServiceImpl implements TestingService {
 
             var studentAnswers = Arrays.stream(studentsAnswer.split(", ")).collect(Collectors.toSet());
             for (String ans : studentAnswers) {
-                if (answers.contains(ans)) {
+                if (answers.contains(ans.trim().toLowerCase())) {
                     ++scores;
                 }
             }
