@@ -38,7 +38,7 @@ public class TestingServiceImpl implements TestingService {
             consoleIOService.out(localizationService.getMessage("test.answer"));
             String studentsAnswer = consoleIOService.read();
 
-            var studentAnswers = Arrays.stream(studentsAnswer.split(", ")).collect(Collectors.toSet());
+            var studentAnswers = Arrays.stream(studentsAnswer.split(",")).collect(Collectors.toSet());
             for (String ans : studentAnswers) {
                 if (answers.contains(ans.trim().toLowerCase())) {
                     ++scores;
